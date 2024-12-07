@@ -1,11 +1,14 @@
 package com.atoudeft.controleur;
 
-import com.atoudeft.client.Client;
-
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
+import com.atoudeft.client.Client;
+import com.atoudeft.vue.PanneauConfigServeur;
 
 /**
  *
@@ -52,6 +55,39 @@ public class EcouteurMenuPrincipal implements ActionListener {
                     break;
                 case "CONFIGURER":
                     //TODO : compléter (question 1.3)
+                    boolean valide = false;
+
+                    while (!valide) {
+                        // Créer et afficher le panneau de configuration
+                        PanneauConfigServeur panneauConfig = new PanneauConfigServeur(client.getAdrServeur(), client.getPortServeur());
+                        int option = JOptionPane.showConfirmDialog(
+                                fenetre,
+                                panneauConfig,
+                                "Configuration du serveur",
+                                JOptionPane.OK_CANCEL_OPTION,
+                                JOptionPane.PLAIN_MESSAGE
+                        );
+
+                        if (option == JOptionPane.OK_OPTION) {
+                            try {
+                                String nouvelleAdr = panneauConfig.getAdresseServeur();
+                                int nouveauPort = Integer.parseInt(panneauConfig.getPortServeur());
+                                client.setAdrServeur(nouvelleAdr);
+                                client.setPortServeur(nouveauPort);
+                                valide = true; 
+                            } catch (NumberFormatException e) {
+                                // Afficher une boîte d'erreur si le port n'est pas un entier
+                                JOptionPane.showMessageDialog(
+                                        fenetre,
+                                        "Le port doit être un entier valide.",
+                                        "Erreur",
+                                        JOptionPane.ERROR_MESSAGE
+                                );
+                            }
+                        } else {
+                            valide = true;
+                        }
+                    }
                     break;
                 case "QUITTER":
                     if (client.isConnecte()) {

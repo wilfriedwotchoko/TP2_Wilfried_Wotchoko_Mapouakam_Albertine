@@ -1,15 +1,21 @@
 package com.atoudeft.vue;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.JButton;
+import javax.swing.JDesktopPane;
+import javax.swing.JList;
+import javax.swing.JPanel;
+
 import com.atoudeft.client.Client;
 import com.atoudeft.controleur.EcouteurConnexion;
 import com.atoudeft.controleur.EcouteurListeComptes;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Vector;
+import com.atoudeft.controleur.EcouteurOperationsCompte;
 
 /**
  *
@@ -20,6 +26,7 @@ import java.util.Vector;
 public class PanneauPrincipal  extends JPanel {
     private Client client;
     private PanneauConnexion panneauConnexion;
+    private JButton btnCreerEpargne;
     private JPanel panneauCompteClient;
     private PanneauOperationsCompte panneauOperationsCompte;
 
@@ -48,6 +55,12 @@ public class PanneauPrincipal  extends JPanel {
         jlNumerosComptes.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
         jlNumerosComptes.setBorder(BorderFactory.createTitledBorder("Comptes bancaires"));
         jlNumerosComptes.setPreferredSize(new Dimension(250,500));
+
+
+        btnCreerEpargne = new JButton("Créer compte épargne");
+        btnCreerEpargne.setActionCommand("EPARGNE");
+        btnCreerEpargne.addActionListener(new EcouteurOperationsCompte(client, this));
+        panneauCompteClient.add(btnCreerEpargne, BorderLayout.SOUTH);
 
 
         panneauCompteClient.add(panneauOperationsCompte, BorderLayout.NORTH);
@@ -90,5 +103,6 @@ public class PanneauPrincipal  extends JPanel {
      */
     public void ajouterCompte(String str) {
         numerosComptes.addElement(str);
+        this.repaint();
     }
 }
