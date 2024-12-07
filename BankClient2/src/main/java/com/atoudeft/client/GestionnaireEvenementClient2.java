@@ -1,12 +1,12 @@
 package com.atoudeft.client;
 
+import javax.swing.JOptionPane;
+
 import com.atoudeft.commun.evenement.Evenement;
 import com.atoudeft.commun.evenement.GestionnaireEvenement;
 import com.atoudeft.commun.net.Connexion;
 import com.atoudeft.vue.PanneauPrincipal;
 import com.programmes.MainFrame;
-
-import javax.swing.*;
 
 public class GestionnaireEvenementClient2 implements GestionnaireEvenement {
     private Client client;
@@ -81,8 +81,15 @@ public class GestionnaireEvenementClient2 implements GestionnaireEvenement {
                     break;
                 /******************* SÉLECTION DE COMPTES *******************/
                 case "EPARGNE" :
-                    arg = evenement.getArgument();
-                    JOptionPane.showMessageDialog(panneauPrincipal,"EPARGNE "+arg);
+                    if ("EPARGNE".equals(evenement.getType())) {
+                        String argument = evenement.getArgument();
+                        if (argument.startsWith("OK")) {
+                            panneauPrincipal.ajouterCompte(argument.split(" ")[1]);
+                            JOptionPane.showMessageDialog(panneauPrincipal, "Compte épargne créé avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(panneauPrincipal, "Erreur lors de la création du compte épargne.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
                     break;
                 case "SELECT" :
                     arg = evenement.getArgument();
