@@ -1,5 +1,12 @@
 package com.programmes;
 
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+
 import com.atoudeft.client.Client;
 import com.atoudeft.client.GestionnaireEvenementClient2;
 import com.atoudeft.commun.evenement.GestionnaireEvenement;
@@ -7,11 +14,6 @@ import com.atoudeft.controleur.EcouteurMenuPrincipal;
 import com.atoudeft.observer.Observable;
 import com.atoudeft.observer.Observateur;
 import com.atoudeft.vue.PanneauPrincipal;
-
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Vector;
 
 /**
  *
@@ -91,13 +93,19 @@ public class MainFrame extends JFrame implements Runnable, Observateur {
 
     @Override
     public void seMettreAJour(Observable observable) {
+        // QUestion 1.1
         if (observable instanceof Client) {
-            Client client = (Client)observable;
-            if (!client.isConnecte()) {
+            Client client = (Client) observable;
+            if (client.isConnecte()) {
+                miConnecter.setEnabled(false);
+                miDeconnecter.setEnabled(true);
+                panneauPrincipal.setVisible(true);
+                this.setTitle(TITRE + " - Connecté");
+            } else {
+                miConnecter.setEnabled(true);
+                miDeconnecter.setEnabled(false);
                 this.setTitle(TITRE);
-                this.panneauPrincipal.setVisible(false);
-                panneauPrincipal.cacherPanneauCompteClient();
-                panneauPrincipal.montrerPanneauConnexion();
+                panneauPrincipal.setVisible(false);
             }
         }
     }
